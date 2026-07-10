@@ -27,18 +27,23 @@ function Profile() {
   if (!user) return <p>Aap login nahi hain.</p>;
 
   return (
-    <div>
+    <div className="profile-container">
       <h2>Welcome, {user.displayName || "User"}</h2>
-      {user.photoURL && (
-        <img 
-          src={user.photoURL} 
-          alt="profile" 
-          style={{ width: 80, height: 80, borderRadius: "50%" }} 
+      {user.photoURL ? (
+        <img
+          className="profile-img"
+          src={user.photoURL}
+          alt="profile"
+          referrerPolicy="no-referrer"
         />
+      ) : (
+        <div className="profile-placeholder">
+          {user.displayName?.charAt(0) || "U"}
+        </div>
       )}
       <p><strong>Name:</strong> {user.displayName}</p>
       <p><strong>Email:</strong> {user.email}</p>
-      <button onClick={handleSignOut}>Sign Out</button>
+      <button className="signout-btn" onClick={handleSignOut}>Sign Out</button>
     </div>
   );
 }

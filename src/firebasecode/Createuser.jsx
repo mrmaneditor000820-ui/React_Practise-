@@ -28,31 +28,33 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="auth-container">
       <h2>Sign Up</h2>
-      <input 
-        type="text" 
-        name="name"
-        placeholder="Full Name" 
-        value={formData.name} 
-        onChange={handleChange} 
-      />
-      <input 
-        type="email" 
-        name="email"
-        placeholder="Email" 
-        value={formData.email} 
-        onChange={handleChange} 
-      />
-      <input 
-        type="password" 
-        name="password"
-        placeholder="Password" 
-        value={formData.password} 
-        onChange={handleChange} 
-      />
-      <button onClick={handleSubmit}>Sign Up</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div className="auth-form">
+        <input 
+          type="text" 
+          name="name"
+          placeholder="Full Name" 
+          value={formData.name} 
+          onChange={handleChange} 
+        />
+        <input 
+          type="email" 
+          name="email"
+          placeholder="Email" 
+          value={formData.email} 
+          onChange={handleChange} 
+        />
+        <input 
+          type="password" 
+          name="password"
+          placeholder="Password" 
+          value={formData.password} 
+          onChange={handleChange} 
+        />
+        <button onClick={handleSubmit}>Sign Up</button>
+      </div>
+      {error && <p className="error-text">{error}</p>}
     </div>
   );
 }

@@ -28,24 +28,26 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="auth-container">
       <h2>Login</h2>
-      <input 
-        type="email" 
-        name="email"
-        placeholder="Email" 
-        value={formData.email} 
-        onChange={handleChange} 
-      />
-      <input 
-        type="password" 
-        name="password"
-        placeholder="Password" 
-        value={formData.password} 
-        onChange={handleChange} 
-      />
-      <button onClick={handleSubmit}>Login</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div className="auth-form">
+        <input 
+          type="email" 
+          name="email"
+          placeholder="Email" 
+          value={formData.email} 
+          onChange={handleChange} 
+        />
+        <input 
+          type="password" 
+          name="password"
+          placeholder="Password" 
+          value={formData.password} 
+          onChange={handleChange} 
+        />
+        <button onClick={handleSubmit}>Login</button>
+      </div>
+      {error && <p className="error-text">{error}</p>}
     </div>
   );
 }
