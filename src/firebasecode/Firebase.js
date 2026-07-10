@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 
+  signOut ,
   signInWithEmailAndPassword,
   updateProfile ,
   onAuthStateChanged
@@ -48,3 +49,14 @@ export const handleLogin = async (email, password) => {
   }
 };
 export { auth, onAuthStateChanged };
+
+
+export const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    console.log("User signed out");
+  } catch (error) {
+    console.error("Error:", error.code, error.message);
+    throw error;
+  }
+};

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { auth, onAuthStateChanged } from "./Firebase";
+import { auth, onAuthStateChanged, handleLogout } from "./Firebase";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -11,8 +11,16 @@ function Profile() {
       setLoading(false);
     });
 
-    return () => unsubscribe(); // cleanup
+    return () => unsubscribe();
   }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await handleLogout();
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
 
@@ -30,7 +38,7 @@ function Profile() {
       )}
       <p><strong>Name:</strong> {user.displayName}</p>
       <p><strong>Email:</strong> {user.email}</p>
-
+      <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
 }
