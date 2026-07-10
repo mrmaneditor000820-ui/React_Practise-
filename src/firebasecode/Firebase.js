@@ -3,7 +3,9 @@ import {
   getAuth, 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
-  updateProfile 
+  updateProfile ,
+  onAuthStateChanged
+
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -45,3 +47,4 @@ export const handleLogin = async (email, password) => {
     throw error;
   }
 };
+export { auth, onAuthStateChanged };
