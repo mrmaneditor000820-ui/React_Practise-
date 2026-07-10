@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { handleSignup } from "./Firebase";
+import { Link, useNavigate } from "react-router-dom";
+import Continuswithgoogle from "../Continuswithgoogle";
 
 function App() {
   const [formData, setFormData] = useState({
@@ -8,6 +10,7 @@ function App() {
     password: "",
   });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -15,17 +18,16 @@ function App() {
       [e.target.name]: e.target.value,
     });
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    try {
-      await handleSignup(formData.name, formData.email, formData.password);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  try {
+    await handleSignup(formData.name, formData.email, formData.password);
+    navigate("/");
+  } catch (err) {
+    setError(err.message);
+  }
+};
 
   return (
     <div className="auth-container">
@@ -53,8 +55,10 @@ function App() {
           onChange={handleChange} 
         />
         <button onClick={handleSubmit}>Sign Up</button>
+        <Link to="/Signupwithexitingemail" className="login-link">Already have an account? Login</Link>
       </div>
       {error && <p className="error-text">{error}</p>}
+      <Continuswithgoogle/>
     </div>
   );
 }

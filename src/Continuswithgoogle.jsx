@@ -1,14 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { handleGoogleSignIn } from "./firebasecode/Firebase";
 
 function GoogleSignIn() {
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleGoogle = async () => {
-    setError("");
     try {
-      const user = await handleGoogleSignIn();
-      console.log("Logged in as:", user.displayName);
+      await handleGoogleSignIn();
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }

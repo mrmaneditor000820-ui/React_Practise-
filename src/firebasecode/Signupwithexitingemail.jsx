@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { handleLogin } from "./Firebase";
 
 function Login() {
@@ -7,6 +8,7 @@ function Login() {
     password: "",
   });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,6 +24,7 @@ function Login() {
     try {
       const user = await handleLogin(formData.email, formData.password);
       console.log("Logged in user:", user);
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }

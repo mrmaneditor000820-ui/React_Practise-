@@ -1,17 +1,12 @@
-import React from 'react'
-import Createuser from './firebasecode/Createuser'
-import Signupwithexitingemail from './firebasecode/Signupwithexitingemail'
-import Profile from './firebasecode/Profiledashborad'
-import Continuswithgoogle from './Continuswithgoogle'
+
+import Rounting from './firebasecode/Rounting'
 import './App.css'
 
 function App() {
   return (
     <>
-    <Createuser/>
-    <Signupwithexitingemail/>
-    <Profile/>
-    <Continuswithgoogle/>
+
+      <Rounting />
     </>
   )
 }
