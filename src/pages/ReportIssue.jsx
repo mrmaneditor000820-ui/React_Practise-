@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { addIssue, getAssetById } from "../firebasecode/Firebase";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
@@ -17,7 +18,9 @@ function ReportIssue() {
   // ---- AI Triage function (smart keyword-based, no external API) ----
   const runAITriage = async () => {
     if (!complaint.trim()) {
-      setError("Pehle complaint likho");
+      const message = "Pehle complaint likho";
+      setError(message);
+      toast.error(message);
       return;
     }
     setError("");
@@ -101,9 +104,12 @@ function ReportIssue() {
         possibleCauses: aiResult.possibleCauses,
         initialChecks: aiResult.initialChecks,
       });
+      toast.success("Issue submitted successfully");
       navigate(`/asset/${id}`);
     } catch (err) {
-      setError(err.message);
+      const message = err.message;
+      setError(message);
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }

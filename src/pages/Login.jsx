@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { loginAdmin, signupAdmin } from "../firebasecode/Firebase";
 
 function Login() {
@@ -16,6 +17,7 @@ function Login() {
 
     try {
       await loginAdmin(email, password);
+      toast.success("Login successful");
       navigate("/admin/dashboard");
     } catch (err) {
       // Agar account exist nahi karta, naya bana ke login kar do
@@ -26,18 +28,27 @@ function Login() {
       ) {
         try {
           await signupAdmin(email, password);
+          toast.success("Account created successfully");
           navigate("/admin/dashboard");
         } catch (signupErr) {
           if (signupErr.code === "auth/weak-password") {
-            setError("Password kam se kam 6 characters ka hona chahiye");
+            const message = "Password kam se kam 6 characters ka hona chahiye";
+            setError(message);
+            toast.error(message);
           } else if (signupErr.code === "auth/email-already-in-use") {
-            setError("Ye email pehle se registered hai, sahi password dalo");
+            const message = "Ye email pehle se registered hai, sahi password dalo";
+            setError(message);
+            toast.error(message);
           } else {
-            setError(signupErr.message);
+            const message = signupErr.message;
+            setError(message);
+            toast.error(message);
           }
         }
       } else {
-        setError(err.message);
+        const message = err.message;
+        setError(message);
+        toast.error(message);
       }
     } finally {
       setLoading(false);

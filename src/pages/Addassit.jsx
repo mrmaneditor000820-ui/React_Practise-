@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { addAsset } from "../firebasecode/Firebase";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 
@@ -26,16 +27,21 @@ function AddAsset() {
     setError("");
 
     if (!formData.name || !formData.category || !formData.location) {
-      setError("Sab fields bharo");
+      const message = "Sab fields bharo";
+      setError(message);
+      toast.error(message);
       return;
     }
 
     try {
       const assetCode = generateAssetCode();
       const id = await addAsset({ ...formData, assetCode });
+      toast.success("Asset registered successfully");
       navigate(`/admin/asset/${id}`);
     } catch (err) {
-      setError(err.message);
+      const message = err.message;
+      setError(message);
+      toast.error(message);
     }
   };
 
