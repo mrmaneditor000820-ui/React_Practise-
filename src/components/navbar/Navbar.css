@@ -1,184 +1,196 @@
-.navbar {
+.ecom-navbar {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ecom-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #0f0f0f;
-  padding: 8px 16px;
-  height: 56px;
-  color: #fff;
-  font-family: Roboto, Arial, sans-serif;
+  padding: 12px 30px;
+  gap: 24px;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+.ecom-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #222;
+  white-space: nowrap;
 }
 
-.hamburger-btn, .icon-btn {
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
+.ecom-logo span {
+  color: #ff6b35;
 }
 
-.hamburger-btn:hover, .icon-btn:hover {
-  background: #272727;
-}
-
-.logo-text {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.logo-name {
-  font-size: 20px;
-  font-weight: 500;
-  margin-left: 4px;
-}
-
-.logo-region {
-  font-size: 10px;
-  color: #aaa;
-  align-self: flex-start;
-  margin-top: 2px;
-}
-
-.navbar-center {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  max-width: 640px;
-  margin: 0 40px;
-}
-
-.search-container {
+.ecom-search {
   display: flex;
   flex: 1;
+  max-width: 600px;
 }
 
-.search-input {
+.ecom-search input {
   flex: 1;
-  height: 40px;
+  height: 42px;
   padding: 0 16px;
-  background: #121212;
-  border: 1px solid #303030;
-  border-radius: 20px 0 0 20px;
-  color: #fff;
-  font-size: 16px;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+  font-size: 14px;
   outline: none;
 }
 
-.search-input:focus {
-  border-color: #1c62b9;
+.ecom-search input:focus {
+  border-color: #ff6b35;
 }
 
-.search-btn {
-  width: 64px;
-  background: #222222;
-  border: 1px solid #303030;
-  border-left: none;
-  border-radius: 0 20px 20px 0;
-  color: #fff;
-  cursor: pointer;
-}
-
-.search-btn:hover {
-  background: #303030;
-}
-
-.mic-btn {
-  margin-left: 12px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #181818;
+.ecom-search button {
+  width: 50px;
+  background: #ff6b35;
   border: none;
+  border-radius: 0 6px 6px 0;
   color: #fff;
   cursor: pointer;
-}
-
-.mic-btn:hover {
-  background: #272727;
-}
-
-.navbar-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
 }
 
-.signin-btn {
+.ecom-search button:hover {
+  background: #e55a2b;
+}
+
+.ecom-icons {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: none;
-  border: 1px solid #3ea6ff;
-  color: #3ea6ff;
-  padding: 8px 12px;
-  border-radius: 20px;
+  gap: 26px;
+}
+
+.ecom-icon-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #333;
   cursor: pointer;
+}
+
+.ecom-icon-item span {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.ecom-icon-item:hover {
+  color: #ff6b35;
+}
+
+.ecom-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #ff6b35;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.ecom-categories {
+  display: flex;
+  gap: 28px;
+  padding: 10px 30px;
+  background: #fafafa;
+  border-top: 1px solid #eee;
+  overflow-x: auto;
+}
+
+.ecom-categories a {
+  text-decoration: none;
+  color: #555;
   font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
-.signin-btn:hover {
-  background: rgba(62, 166, 255, 0.1);
+.ecom-categories a:hover {
+  color: #ff6b35;
 }
-.user-section {
+.ecom-account-menu {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  cursor: pointer;
 }
 
-.navbar-profile-img {
+.ecom-profile-img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.navbar-profile-placeholder {
+.ecom-profile-placeholder {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #764ba2;
+  background: #ff6b35;
   color: #fff;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.navbar-user-name {
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.ecom-account-dropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  min-width: 160px;
+  z-index: 10;
 }
 
-.signout-btn {
-  background: none;
-  border: 1px solid #555;
+.ecom-account-menu:hover .ecom-account-dropdown {
+  display: block;
+}
+
+.ecom-account-name {
+  font-size: 13px;
+  color: #333;
+  margin: 0 0 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ecom-signout-btn {
+  width: 100%;
+  background: #ff6b35;
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 18px;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 13px;
 }
 
-.signout-btn:hover {
-  background: #272727;
-}
-
-.signin-btn {
-  text-decoration: none;
+.ecom-signout-btn:hover {
+  background: #e55a2b;
 }

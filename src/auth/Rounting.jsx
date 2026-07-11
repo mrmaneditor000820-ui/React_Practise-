@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import Createuser from "./Createuser";
-import Signupwithexitingemail from "./Signupwithexitingemail";
-import Home from "../components/home/Home";
+import AddAsset from "../pages/AddAssit";
+import AssetDetails from "../pages/Adddetail";
+import Publicassits from "../pages/Pablicassits";
 
 function Rounting() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/Createuser" element={<Createuser />} />
-      <Route path="/Signupwithexitingemail" element={<Signupwithexitingemail />} />
+      <Route path="/admin/add-asset" element={<AddAsset />} />
+      <Route path="/admin/asset/:id" element={<AssetDetails />} />
+      <Route path="/asset/:id" element={<Publicassits />} />
     </Routes>
   );
 }

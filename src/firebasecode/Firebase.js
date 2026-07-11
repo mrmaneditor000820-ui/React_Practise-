@@ -1,75 +1,108 @@
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut,
-  updateProfile,
+  createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  query,
+  orderBy,
+  serverTimestamp,
+} from "firebase/firestore";
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: "react-project-2e24c.firebaseapp.com",
   projectId: "react-project-2e24c",
   storageBucket: "react-project-2e24c.firebasestorage.app",
   messagingSenderId: "159893641433",
-  appId: "1:159893641433:web:2056e34713e1b2af7b46c8",
-};
+  appId: "1:159893641433:web:2056e34713e1b2af7b46c8"
 
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+export const db = getFirestore(app);
 
-// Signup with Email/Password
-export const handleSignup = async (name, email, password) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    await updateProfile(user, { displayName: name });
-    console.log("Signup successful:", user);
-    return user;
-  } catch (error) {
-    console.error("Error:", error.code, error.message);
-    throw error;
-  }
+// ---- AUTH ----
+export const loginAdmin = async (email, password) => {
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  return cred.user;
 };
 
-// Login with Email/Password
-export const handleLogin = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("Login successful:", userCredential.user);
-    return userCredential.user;
-  } catch (error) {
-    console.error("Error:", error.code, error.message);
-    throw error;
-  }
-};
-
-// Continue with Google
-export const handleGoogleSignIn = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    console.log("Google Sign-In successful:", result.user);
-    return result.user;
-  } catch (error) {
-    console.error("Error:", error.code, error.message);
-    throw error;
-  }
-};
-
-// Logout
-export const handleLogout = async () => {
-  try {
-    await signOut(auth);
-    console.log("User signed out");
-  } catch (error) {
-    console.error("Error:", error.code, error.message);
-    throw error;
-  }
+export const signupAdmin = async (email, password) => {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  return cred.user;
 };
 
 export { auth, onAuthStateChanged };
+
+// ---- ASSETS ----
+export const addAsset = async (assetData) => {
+  const docRef = await addDoc(collection(db, "assets"), {
+    ...assetData,
+    status: "Operational",
+    createdAt: serverTimestamp(),
+  });
+  return docRef.id;
+};
+
+export const getAllAssets = async () => {
+  const snapshot = await getDocs(collection(db, "assets"));
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+};
+
+export const getAssetById = async (id) => {
+  const docSnap = await getDoc(doc(db, "assets", id));
+  if (!docSnap.exists()) return null;
+  return { id: docSnap.id, ...docSnap.data() };
+};
+
+export const updateAssetStatus = async (id, status) => {
+  await updateDoc(doc(db, "assets", id), { status });
+};
+
+// ---- ISSUES ----
+export const addIssue = async (issueData) => {
+  const docRef = await addDoc(collection(db, "issues"), {
+    ...issueData,
+    status: "Reported",
+    createdAt: serverTimestamp(),
+  });
+  await updateAssetStatus(issueData.assetId, "Issue Reported");
+  return docRef.id;
+};
+
+export const getIssuesByAsset = async (assetId) => {
+  const snapshot = await getDocs(collection(db, "issues"));
+  return snapshot.docs
+    .map((d) => ({ id: d.id, ...d.data() }))
+    .filter((issue) => issue.assetId === assetId);
+};
+
+export const getAllIssues = async () => {
+  const q = query(collection(db, "issues"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+};
+
+export const updateIssueStatus = async (issueId, status, assetId) => {
+  await updateDoc(doc(db, "issues", issueId), { status });
+
+  const statusMap = {
+    "Inspection Started": "Under Inspection",
+    "Maintenance In Progress": "Under Maintenance",
+    "Resolved": "Operational",
+  };
+  if (statusMap[status] && assetId) {
+    await updateAssetStatus(assetId, statusMap[status]);
+  }
+};
