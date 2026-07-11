@@ -7,11 +7,12 @@ function Home() {
       <Navbar />
       <div className="home-page">
         <section className="hero-card">
-          <p className="eyebrow">AI-Powered QR Maintenance & Asset History Platform</p>
-          <h1>Track every asset, issue, and repair story from one smart dashboard.</h1>
+          <p className="eyebrow">Professional Maintenance Management Platform</p>
+          <h1>Give every physical asset a digital identity, service history, and accountable maintenance workflow.</h1>
           <p>
-            Scan a QR code, report a problem in seconds, and let AI help classify the issue
-            before it reaches the maintenance team.
+            QR codes are only the entry point. MaintainIQ helps teams triage issues, assign work,
+            track progress, preserve evidence, and build a complete maintenance history for schools,
+            hospitals, offices, factories, and facilities.
           </p>
           <div className="hero-actions">
             <Link to="/login" className="primary-cta">
@@ -25,16 +26,16 @@ function Home() {
 
         <section className="feature-grid">
           <article className="feature-card">
-            <h3>QR-Based Asset Access</h3>
-            <p>Every asset gets a unique QR link for instant public status and issue reporting.</p>
+            <h3>Digital Asset Identity</h3>
+            <p>Every asset gets a permanent record with location, category, status, and maintenance history.</p>
           </article>
           <article className="feature-card">
-            <h3>Smart AI Triage</h3>
-            <p>Reports are categorized by intent and priority so teams can act faster.</p>
+            <h3>AI-Assisted Issue Triage</h3>
+            <p>Reports are classified by priority, recommended action, and likely causes so teams act faster.</p>
           </article>
           <article className="feature-card">
-            <h3>Complete History</h3>
-            <p>Track every maintenance update and issue timeline in one place.</p>
+            <h3>Accountable Service Workflow</h3>
+            <p>Track assignments, progress, evidence, and follow-ups in one professional maintenance system.</p>
           </article>
         </section>
       </div>

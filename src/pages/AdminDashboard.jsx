@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllAssets, getAllIssues, updateIssueStatus } from "../firebasecode/Firebase";
+import { getAllAssets, getAllIssues, updateIssueStatus, assignTechnician } from "../firebasecode/Firebase";
 import Navbar from "../components/navbar/Navbar";
 import Isshucard from "../components/assetscard/isshucard/Isshucard";
 import Footer from "../components/footer/Footer";
+
+const TECHNICIANS = ["Unassigned", "Ali", "Zeeshan", "Bilal", "Hamza"];
 
 function AdminDashboard() {
   const [issues, setIssues] = useState([]);
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [assetSearch, setAssetSearch] = useState("");
+  const [issueSearch, setIssueSearch] = useState("");
 
   const loadData = useCallback(async () => {
     try {
@@ -30,9 +34,18 @@ function AdminDashboard() {
     return () => window.clearTimeout(timeoutId);
   }, [loadData]);
 
-  const handleStatusChange = async (issueId, newStatus, assetId) => {
+  const handleStatusChange = async (issueId, newStatus, assetId, note) => {
     try {
-      await updateIssueStatus(issueId, newStatus, assetId);
+      await updateIssueStatus(issueId, newStatus, assetId, note);
+      await loadData();
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const handleAssignChange = async (issueId, technicianName) => {
+    try {
+      await assignTechnician(issueId, technicianName);
       await loadData();
     } catch (err) {
       console.error(err.message);
@@ -41,6 +54,26 @@ function AdminDashboard() {
 
   const pendingIssues = issues.filter((issue) => issue.status !== "Resolved" && issue.status !== "Closed").length;
   const resolvedIssues = issues.filter((issue) => issue.status === "Resolved" || issue.status === "Closed").length;
+
+  const filteredAssets = assets.filter((asset) => {
+    const query = assetSearch.toLowerCase();
+    return (
+      asset.name?.toLowerCase().includes(query) ||
+      asset.category?.toLowerCase().includes(query) ||
+      asset.location?.toLowerCase().includes(query) ||
+      asset.assetCode?.toLowerCase().includes(query)
+    );
+  });
+
+  const filteredIssues = issues.filter((issue) => {
+    const query = issueSearch.toLowerCase();
+    return (
+      issue.title?.toLowerCase().includes(query) ||
+      issue.category?.toLowerCase().includes(query) ||
+      issue.status?.toLowerCase().includes(query) ||
+      issue.description?.toLowerCase().includes(query)
+    );
+  });
 
   if (loading) return <p style={{ textAlign: "center", marginTop: 40 }}>Loading...</p>;
 
@@ -86,10 +119,18 @@ function AdminDashboard() {
                 </Link>
               </div>
 
-              {assets.length === 0 ? (
-                <p className="empty-state">No assets registered yet.</p>
+              <input
+                type="text"
+                className="dashboard-search"
+                placeholder="Search assets by name, category, or code"
+                value={assetSearch}
+                onChange={(e) => setAssetSearch(e.target.value)}
+              />
+
+              {filteredAssets.length === 0 ? (
+                <p className="empty-state">No matching assets found.</p>
               ) : (
-                assets.map((asset) => <Isshucard key={asset.id} asset={asset} />)
+                filteredAssets.map((asset) => <Isshucard key={asset.id} asset={asset} />)
               )}
             </section>
 
@@ -98,10 +139,18 @@ function AdminDashboard() {
                 <h3>Recent Issues</h3>
               </div>
 
-              {issues.length === 0 ? (
-                <p className="empty-state">No issue reports yet.</p>
+              <input
+                type="text"
+                className="dashboard-search"
+                placeholder="Search issues by title, status, or category"
+                value={issueSearch}
+                onChange={(e) => setIssueSearch(e.target.value)}
+              />
+
+              {filteredIssues.length === 0 ? (
+                <p className="empty-state">No matching issues found.</p>
               ) : (
-                issues.map((issue) => (
+                filteredIssues.map((issue) => (
                   <div key={issue.id} className={`issue-card priority-${issue.priority?.toLowerCase()}`}>
                     <div className="issue-top">
                       <h3>{issue.title}</h3>
@@ -112,12 +161,24 @@ function AdminDashboard() {
 
                     <p className="issue-desc">{issue.description}</p>
                     <p className="issue-meta">Category: {issue.category}</p>
+                    {issue.maintenanceNote && (
+                      <p className="issue-meta">Note: {issue.maintenanceNote}</p>
+                    )}
 
                     <div className="issue-status-row">
                       <label>Status:</label>
                       <select
                         value={issue.status}
-                        onChange={(e) => handleStatusChange(issue.id, e.target.value, issue.assetId)}
+                        onChange={(e) => {
+                          const newStatus = e.target.value;
+                          if (newStatus === "Resolved" && !issue.maintenanceNote) {
+                            const note = prompt("Maintenance note likho (resolve karne se pehle zaroori hai):");
+                            if (!note) return;
+                            handleStatusChange(issue.id, newStatus, issue.assetId, note);
+                          } else {
+                            handleStatusChange(issue.id, newStatus, issue.assetId);
+                          }
+                        }}
                       >
                         <option>Reported</option>
                         <option>Assigned</option>
@@ -125,6 +186,21 @@ function AdminDashboard() {
                         <option>Maintenance In Progress</option>
                         <option>Resolved</option>
                         <option>Closed</option>
+                        <option>Reopened</option>
+                      </select>
+                    </div>
+
+                    <div className="issue-status-row">
+                      <label>Technician:</label>
+                      <select
+                        value={issue.assignedTo || "Unassigned"}
+                        onChange={(e) => handleAssignChange(issue.id, e.target.value)}
+                      >
+                        {TECHNICIANS.map((tech) => (
+                          <option key={tech} value={tech}>
+                            {tech}
+                          </option>
+                        ))}
                       </select>
                     </div>
 

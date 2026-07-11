@@ -80,6 +80,10 @@ export const addIssue = async (issueData) => {
     ...issueData,
     status: "Reported",
     createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    evidence: issueData.evidence || [],
+    recommendedAction: issueData.recommendedAction || "Inspection required",
+    reportedBy: issueData.reportedBy || "Public User",
   });
   await updateAssetStatus(issueData.assetId, "Issue Reported");
   return docRef.id;
@@ -99,8 +103,14 @@ export const getAllIssues = async () => {
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
 };
 
-export const updateIssueStatus = async (issueId, status, assetId) => {
-  await updateDoc(doc(db, "issues", issueId), { status });
+export const updateIssueStatus = async (issueId, status, assetId, note) => {
+  const updateData = {
+    status,
+    updatedAt: serverTimestamp(),
+  };
+  if (note) updateData.maintenanceNote = note;
+
+  await updateDoc(doc(db, "issues", issueId), updateData);
 
   const statusMap = {
     "Inspection Started": "Under Inspection",
@@ -110,4 +120,9 @@ export const updateIssueStatus = async (issueId, status, assetId) => {
   if (statusMap[status] && assetId) {
     await updateAssetStatus(assetId, statusMap[status]);
   }
+};
+
+export const assignTechnician = async (issueId, technicianName) => {
+  const issueRef = doc(db, "issues", issueId);
+  await updateDoc(issueRef, { assignedTo: technicianName });
 };
