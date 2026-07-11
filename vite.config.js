@@ -7,4 +7,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: "/MaintainIQ-AI-powered-QR-maintenance-system",   // 👈 yahan, plugins array ke bahar
 })
