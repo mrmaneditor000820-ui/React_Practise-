@@ -18,16 +18,20 @@ function Navbar() {
 
   return (
     <nav className="app-navbar">
-      <Link to="/admin/dashboard" className="nav-logo">MaintainIQ</Link>
+      <Link to="/" className="nav-logo">
+        MaintainIQ
+      </Link>
 
       {user ? (
         <div className="nav-links">
+          <Link to="/">Home</Link>
           <Link to="/admin/dashboard">Dashboard</Link>
           <Link to="/admin/add-asset">+ Add Asset</Link>
           <button onClick={onLogout}>Logout</button>
         </div>
       ) : (
         <div className="nav-links">
+          <Link to="/">Home</Link>
           <Link to="/login">Login</Link>
         </div>
       )}

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { addIssue, getAssetById } from "../firebasecode/Firebase";
+import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer/Footer";
 
 function ReportIssue() {
   const { id } = useParams();
@@ -108,67 +110,73 @@ function ReportIssue() {
   };
 
   return (
-    <div className="report-container">
-      <h2>Report an Issue</h2>
+    <div className="app-layout">
+      <Navbar />
+      <main>
+        <div className="report-container">
+          <h2>Report an Issue</h2>
 
-      <textarea
-        placeholder="Describe the problem... (e.g. AC se pani leak ho raha hai)"
-        value={complaint}
-        onChange={(e) => setComplaint(e.target.value)}
-        rows={4}
-      />
-
-      <button onClick={runAITriage} disabled={loadingAI}>
-        {loadingAI ? "AI analyzing..." : "Analyze with AI"}
-      </button>
-
-      {error && <p className="error-text">{error}</p>}
-
-      {aiResult && (
-        <div className="ai-result-box">
-          <h3>AI Suggestion (edit if needed)</h3>
-
-          <label>Title</label>
-          <input
-            value={aiResult.title}
-            onChange={(e) => handleFieldChange("title", e.target.value)}
+          <textarea
+            placeholder="Describe the problem... (e.g. AC se pani leak ho raha hai)"
+            value={complaint}
+            onChange={(e) => setComplaint(e.target.value)}
+            rows={4}
           />
 
-          <label>Category</label>
-          <input
-            value={aiResult.category}
-            onChange={(e) => handleFieldChange("category", e.target.value)}
-          />
-
-          <label>Priority</label>
-          <select
-            value={aiResult.priority}
-            onChange={(e) => handleFieldChange("priority", e.target.value)}
-          >
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-          </select>
-
-          <div className="ai-list">
-            <strong>Possible Causes:</strong>
-            <ul>
-              {aiResult.possibleCauses?.map((c, i) => <li key={i}>{c}</li>)}
-            </ul>
-          </div>
-
-          <div className="ai-list">
-            <strong>Initial Checks:</strong>
-            <ul>
-              {aiResult.initialChecks?.map((c, i) => <li key={i}>{c}</li>)}
-            </ul>
-          </div>
-
-          <button onClick={handleSubmit} disabled={submitting} className="submit-btn">
-            {submitting ? "Submitting..." : "Submit Issue"}
+          <button onClick={runAITriage} disabled={loadingAI}>
+            {loadingAI ? "AI analyzing..." : "Analyze with AI"}
           </button>
+
+          {error && <p className="error-text">{error}</p>}
+
+          {aiResult && (
+            <div className="ai-result-box">
+              <h3>AI Suggestion (edit if needed)</h3>
+
+              <label>Title</label>
+              <input
+                value={aiResult.title}
+                onChange={(e) => handleFieldChange("title", e.target.value)}
+              />
+
+              <label>Category</label>
+              <input
+                value={aiResult.category}
+                onChange={(e) => handleFieldChange("category", e.target.value)}
+              />
+
+              <label>Priority</label>
+              <select
+                value={aiResult.priority}
+                onChange={(e) => handleFieldChange("priority", e.target.value)}
+              >
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+
+              <div className="ai-list">
+                <strong>Possible Causes:</strong>
+                <ul>
+                  {aiResult.possibleCauses?.map((c, i) => <li key={i}>{c}</li>)}
+                </ul>
+              </div>
+
+              <div className="ai-list">
+                <strong>Initial Checks:</strong>
+                <ul>
+                  {aiResult.initialChecks?.map((c, i) => <li key={i}>{c}</li>)}
+                </ul>
+              </div>
+
+              <button onClick={handleSubmit} disabled={submitting} className="submit-btn">
+                {submitting ? "Submitting..." : "Submit Issue"}
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      </main>
+      <Footer />
     </div>
   );
 }

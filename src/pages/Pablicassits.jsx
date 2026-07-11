@@ -12,9 +12,7 @@ function PublicAsset() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Fetching asset with id:", id); // ← debug
         const data = await getAssetById(id);
-        console.log("Asset data received:", data); // ← debug
 
         if (!data) {
           setNotFound(true);
@@ -24,7 +22,7 @@ function PublicAsset() {
           setIssues(issueData);
         }
       } catch (err) {
-        console.error("Fetch error:", err); // ← asal error yahan dikhega
+        console.error("Fetch error:", err);
         setNotFound(true);
       } finally {
         setLoading(false);
@@ -39,7 +37,7 @@ function PublicAsset() {
     return (
       <div className="public-asset-container">
         <h2>Asset not found</h2>
-        <p>Ye QR code ya link valid nahi hai.</p>
+        <p>This QR code or link does not match a registered asset.</p>
       </div>
     );
   }

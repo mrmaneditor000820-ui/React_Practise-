@@ -86,7 +86,8 @@ export const addIssue = async (issueData) => {
 };
 
 export const getIssuesByAsset = async (assetId) => {
-  const snapshot = await getDocs(collection(db, "issues"));
+  const q = query(collection(db, "issues"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
   return snapshot.docs
     .map((d) => ({ id: d.id, ...d.data() }))
     .filter((issue) => issue.assetId === assetId);

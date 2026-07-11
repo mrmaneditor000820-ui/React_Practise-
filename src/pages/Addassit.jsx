@@ -2,6 +2,7 @@ import { useState } from "react";
 import { addAsset } from "../firebasecode/Firebase";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer/Footer";
 
 function AddAsset() {
   const [formData, setFormData] = useState({
@@ -39,37 +40,40 @@ function AddAsset() {
   };
 
   return (
-   <>
-   <Navbar />
-    <div className="form-container">
-      <h2>Register New Asset</h2>
-      <form onSubmit={handleSubmit} className="asset-form">
-        <input
-          type="text"
-          name="name"
-          placeholder="Asset Name (e.g. Classroom Projector 01)"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Category (e.g. Projector, AC, Printer)"
-          value={formData.category}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location (e.g. Room 204, 2nd Floor)"
-          value={formData.location}
-          onChange={handleChange}
-        />
-        <button type="submit">Register Asset</button>
-      </form>
-      {error && <p className="error-text">{error}</p>}
+    <div className="app-layout">
+      <Navbar />
+      <main>
+        <div className="form-container">
+          <h2>Register New Asset</h2>
+          <form onSubmit={handleSubmit} className="asset-form">
+            <input
+              type="text"
+              name="name"
+              placeholder="Asset Name (e.g. Classroom Projector 01)"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="category"
+              placeholder="Category (e.g. Projector, AC, Printer)"
+              value={formData.category}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="location"
+              placeholder="Location (e.g. Room 204, 2nd Floor)"
+              value={formData.location}
+              onChange={handleChange}
+            />
+            <button type="submit">Register Asset</button>
+          </form>
+          {error && <p className="error-text">{error}</p>}
+        </div>
+      </main>
+      <Footer />
     </div>
-    </>
   );
 }
 
