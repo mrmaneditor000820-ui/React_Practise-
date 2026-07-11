@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { addAsset } from "../firebasecode/Firebase";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/navbar/Navbar";
 
 function AddAsset() {
   const [formData, setFormData] = useState({
@@ -38,6 +39,8 @@ function AddAsset() {
   };
 
   return (
+   <>
+   <Navbar />
     <div className="form-container">
       <h2>Register New Asset</h2>
       <form onSubmit={handleSubmit} className="asset-form">
@@ -66,6 +69,7 @@ function AddAsset() {
       </form>
       {error && <p className="error-text">{error}</p>}
     </div>
+    </>
   );
 }
 

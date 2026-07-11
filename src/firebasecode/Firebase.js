@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -26,7 +27,6 @@ const firebaseConfig = {
   storageBucket: "react-project-2e24c.firebasestorage.app",
   messagingSenderId: "159893641433",
   appId: "1:159893641433:web:2056e34713e1b2af7b46c8"
-
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -41,6 +41,10 @@ export const loginAdmin = async (email, password) => {
 export const signupAdmin = async (email, password) => {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
   return cred.user;
+};
+
+export const handleLogout = async () => {
+  await signOut(auth);
 };
 
 export { auth, onAuthStateChanged };
