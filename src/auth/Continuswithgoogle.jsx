@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleGoogleSignIn } from "./firebasecode/Firebase";
+import { handleGoogleSignIn } from "../firebasecode/Firebase";
 
-function GoogleSignIn() {
+function Continuswithgoogle() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleGoogle = async () => {
+    setError("");
     try {
       await handleGoogleSignIn();
       navigate("/");
@@ -16,7 +17,7 @@ function GoogleSignIn() {
   };
 
   return (
-    <div className="auth-container">
+    <div>
       <button className="google-btn" onClick={handleGoogle}>
         Continue with Google
       </button>
@@ -25,4 +26,4 @@ function GoogleSignIn() {
   );
 }
 
-export default GoogleSignIn;
+export default Continuswithgoogle;

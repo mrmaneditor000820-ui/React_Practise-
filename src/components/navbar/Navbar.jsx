@@ -1,23 +1,19 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { auth, onAuthStateChanged, handleLogout } from "../../firebasecode/Firebase";
 import "./Navbar.css";
 
 function Navbar() {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
+    const unsubscribe = onAuthStateChanged(auth, setUser);
     return () => unsubscribe();
   }, []);
 
   const handleSignOut = async () => {
     try {
       await handleLogout();
-      navigate("/Createuser");
     } catch (err) {
       console.error(err.message);
     }
@@ -90,9 +86,7 @@ function Navbar() {
                 {user.displayName?.charAt(0) || "U"}
               </div>
             )}
-            <span className="navbar-user-name">
-              {user.displayName || user.email || "User"}
-            </span>
+            <span className="navbar-user-name">{user.displayName || user.email}</span>
             <button className="signout-btn" onClick={handleSignOut}>
               Sign Out
             </button>

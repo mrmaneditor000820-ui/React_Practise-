@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleLogin } from "./Firebase";
+import { handleLogin } from "../firebasecode/Firebase";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -11,10 +11,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -22,8 +19,7 @@ function Login() {
     setError("");
 
     try {
-      const user = await handleLogin(formData.email, formData.password);
-      console.log("Logged in user:", user);
+      await handleLogin(formData.email, formData.password);
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -33,23 +29,23 @@ function Login() {
   return (
     <div className="auth-container">
       <h2>Login</h2>
-      <div className="auth-form">
-        <input 
-          type="email" 
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <input
+          type="email"
           name="email"
-          placeholder="Email" 
-          value={formData.email} 
-          onChange={handleChange} 
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
         />
-        <input 
-          type="password" 
+        <input
+          type="password"
           name="password"
-          placeholder="Password" 
-          value={formData.password} 
-          onChange={handleChange} 
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
         />
-        <button onClick={handleSubmit}>Login</button>
-      </div>
+        <button type="submit">Login</button>
+      </form>
       {error && <p className="error-text">{error}</p>}
     </div>
   );

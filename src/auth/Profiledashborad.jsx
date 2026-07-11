@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { auth, onAuthStateChanged, handleLogout } from "./Firebase";
+import { auth, onAuthStateChanged, handleLogout } from "../firebasecode/Firebase";
 
 function Profile() {
   const [user, setUser] = useState(null);
