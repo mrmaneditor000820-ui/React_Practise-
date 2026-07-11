@@ -1027,3 +1027,148 @@ a {
     padding: 16px;
   }
 }
+
+/* ===== Stats Bar ===== */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin: 50px auto;
+  padding: 30px 20px;
+  max-width: 900px;
+  background: #f8f9fb;
+  border-radius: 16px;
+  border: 1px solid #eaeaea;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item h2 {
+  font-size: 2.2rem;
+  margin: 0;
+  color: #1a1a2e;
+  font-weight: 700;
+}
+
+.stat-item p {
+  margin: 6px 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ===== How It Works ===== */
+.how-it-works {
+  max-width: 1100px;
+  margin: 70px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 1.8rem;
+  margin-bottom: 40px;
+  color: #1a1a2e;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.step-item {
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 14px;
+  padding: 28px 20px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.step-item h4 {
+  margin: 8px 0;
+  font-size: 1.05rem;
+  color: #1a1a2e;
+}
+
+.step-item p {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ===== Feature Icon (added to existing feature-card) ===== */
+.feature-icon {
+  font-size: 1.8rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* ===== CTA Banner ===== */
+.cta-banner {
+  max-width: 800px;
+  margin: 70px auto 40px;
+  padding: 50px 30px;
+  text-align: center;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 20px;
+  color: #fff;
+}
+
+.cta-banner h2 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.cta-banner p {
+  color: #cfd3e0;
+  margin-bottom: 24px;
+}
+
+.cta-banner .primary-cta {
+  background: #fff;
+  color: #1a1a2e;
+}
+
+.cta-banner .primary-cta:hover {
+  background: #f0f0f0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-bar {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+}
