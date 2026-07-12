@@ -1,66 +1,71 @@
-import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebasecode/Firebase";
 import { QRCodeCanvas } from "qrcode.react";
-import { getAssetById, getIssuesByAsset } from "../firebasecode/Firebase";
 import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer/Footer";
 
 function AssetDetails() {
   const { id } = useParams();
   const [asset, setAsset] = useState(null);
-  const [issues, setIssues] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAsset = async () => {
-      const [assetData, issueData] = await Promise.all([getAssetById(id), getIssuesByAsset(id)]);
-      setAsset(assetData);
-      setIssues(issueData);
-    };
+    async function fetchAsset() {
+      try {
+        const docRef = doc(db, "assets", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setAsset({ id: docSnap.id, ...docSnap.data() });
+        }
+      } catch (err) {
+        console.error("Error fetching asset:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
     fetchAsset();
   }, [id]);
 
-  if (!asset) return <p>Loading...</p>;
+  const qrUrl = `${window.location.origin}/asset/${id}`;
 
-  const publicUrl = `${window.location.origin}/asset/${id}`;
+  const downloadQR = () => {
+    const canvas = document.getElementById("asset-qr-code");
+    const pngUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = pngUrl;
+    link.download = `${asset?.name || "asset"}-QR.png`;
+    link.click();
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (!asset) return <p>Asset not found</p>;
 
   return (
-    <>
+    <div className="app-layout">
       <Navbar />
-      <div className="asset-details">
-        <h2>{asset.name}</h2>
-        <p><strong>Code:</strong> {asset.assetCode}</p>
-        <p><strong>Category:</strong> {asset.category}</p>
-        <p><strong>Location:</strong> {asset.location}</p>
-        <p><strong>Status:</strong> {asset.status}</p>
+      <main>
+        <div className="asset-details-container">
+          <h2>{asset.name}</h2>
+          <p><strong>Category:</strong> {asset.category}</p>
+          <p><strong>Location:</strong> {asset.location}</p>
+          <p><strong>Asset Code:</strong> {asset.assetCode}</p>
 
-        <div className="qr-box">
-          <QRCodeCanvas value={publicUrl} size={180} />
-          <p>Scan this QR to open the public asset page</p>
-          <Link to={`/asset/${id}`} target="_blank" rel="noreferrer">
-            Open Public Asset Page
-          </Link>
+          <div className="qr-section">
+            <QRCodeCanvas
+              id="asset-qr-code"
+              value={qrUrl}
+              size={220}
+              level="H"
+            />
+            <p className="qr-link">{qrUrl}</p>
+            <button onClick={downloadQR}>Download QR Code</button>
+          </div>
         </div>
-
-        <div className="recent-activity">
-          <h3>Maintenance History</h3>
-          {issues.length === 0 ? (
-            <p>No history yet. Report the first issue to start the timeline.</p>
-          ) : (
-            issues.map((issue) => (
-              <div key={issue.id} className="activity-item">
-                <p>{issue.title}</p>
-                <span className={`mini-status status-${issue.status?.replace(/\s+/g, "-").toLowerCase()}`}>
-                  {issue.status}
-                </span>
-              </div>
-            ))
-          )}
-        </div>
-
-        <Link to={`/report-issue/${id}`} className="report-btn">
-          Report an Issue
-        </Link>
-      </div>
-    </>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
