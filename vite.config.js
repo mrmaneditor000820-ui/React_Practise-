@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  base: '/YouTube.com/',
   plugins: [
     react(),
     tailwindcss(),
   ],
-  base: "/MaintainIQ-AI-powered-QR-maintenance-system",   // 👈 yahan, plugins array ke bahar
 })
