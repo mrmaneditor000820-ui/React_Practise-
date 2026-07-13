@@ -15,9 +15,14 @@ function ProtectedRoute({ children }) {
     return () => unsubscribe();
   }, []);
 
-  if (!checked) return <p>Loading...</p>;
-  if (!user) return <Navigate to="/login" />;
-  return children;
+ if (!checked) return <p>Loading...</p>;
+
+if (!user) {
+  return <Navigate to="/login" replace />;
+}
+
+return children;
+
 }
 
 export default ProtectedRoute;

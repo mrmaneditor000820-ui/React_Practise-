@@ -28,8 +28,7 @@ function AssetDetails() {
     fetchAsset();
   }, [id]);
 
-  const qrUrl = `${window.location.origin}/asset/${id}`;
-
+const qrUrl = `${window.location.origin}/asset/${id}`;
   const downloadQR = () => {
     const canvas = document.getElementById("asset-qr-code");
     const pngUrl = canvas.toDataURL("image/png");
