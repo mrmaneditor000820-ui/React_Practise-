@@ -58,7 +58,7 @@ const qrUrl = `${window.location.origin}/asset/${id}`;
               size={220}
               level="H"
             />
-            <p className="qr-link">{qrUrl}</p>
+            {/* <p className="qr-link">{qrUrl}</p> */}
             <button onClick={downloadQR}>Download QR Code</button>
           </div>
         </div>
